@@ -36,8 +36,6 @@ import Blockly from 'blockly/core';
 
 import {colorPalette} from '../propc';
 import {getDefaultProfile, getProjectInitialState} from '../../../project';
-// import {isExperimental} from '../../../utility';
-
 
 // ------------------ Terminal Console Blocks ----------------------------------
 
@@ -1534,14 +1532,19 @@ Blockly.Blocks.serial_receive_text = {
 Blockly.propc.serial_receive_text = function() {
   let p = '';
   if (this.ser_pins.length > 0) {
-    p = this.ser_pins[0].replace(',', '_').replace(/None/g, 'N');
+    p = this.ser_pins[0]
+        .replace(',', '_') // Replace commas with underscores
+        .replace(/None/g, 'N'); // Replace 'None' with 'N' in all occurrences.
   }
+
   if (this.getInput('SERPIN')) {
     p = this.getFieldValue('SER_PIN')
         .replace(',', '_')
         .replace(/None/g, 'N');
   }
+
   const allBlocks = Blockly.getMainWorkspace().getAllBlocks().toString();
+
   if (allBlocks.indexOf('Serial initialize') === -1) {
     return '// ERROR: Serial is not initialized!\n';
   } else {
